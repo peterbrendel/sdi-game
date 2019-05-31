@@ -3,6 +3,13 @@
 // Daniel Shiffman
 
 // Keep track of our socket connection
+
+/*      TODO
+ *  1: Get keyboard Event
+ *  2: Print name of winner
+ *  3: Fix issues
+ */
+
 var socket;
 var bgColor;
 var inp;

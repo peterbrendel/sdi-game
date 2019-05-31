@@ -1,3 +1,10 @@
+/*      TODO
+ *  1: Packet ordering (timestamp ??)
+ *  2: Send name of winner
+ *  3: Fix issues
+ */
+
+
 const readline = require('readline');
 const express = require('express');
 const socket = require('socket.io');

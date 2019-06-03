@@ -24,7 +24,7 @@ var gi = false;
 
 
 function setup() {
-  createCanvas(400, 400);
+  createCanvas(width, height);
   fill(0);
   textSize(width/4);
   textAlign(CENTER, CENTER);

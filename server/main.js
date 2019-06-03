@@ -12,6 +12,14 @@ const reader = require('readline-async');
 const random = require('random');
 const app = express();
 
+/*
+ * ENUM GAMESTATE
+ *	0 = Waiting
+ * 	1 = Accepting
+ *	2 = .
+ */
+
+let GAMESTATE = 0;
 let PORT = 8080;
 let io = null;
 
@@ -19,6 +27,16 @@ let teams = new Map();
 let admin = null;
 let adminName = null;
 let server = app.listen(process.env.PORT || PORT, 'localhost', listen); // Heroku PORT env variable PORT or 8080; Testar 80 na sdi-1
+
+function setGamestate(state) {
+	if(state < 0 || state > 1) {
+		console.log('nope');
+		return false;
+	}
+	GAMESTATE = state;
+	console.log('New Gamestate ' + GAMESTATE);
+	return true;
+}
 
 function listen() {
 	var host = server.address().address;
@@ -61,9 +79,22 @@ if(io != null) {
 			if(socket.id === admin){
 				let data = random.int(2,8);
 				io.sockets.emit('count', {_:data});
+				setTimeout(() => {
+					console.log('entered');
+					setGamestate(1);
+				}, (data)*1000);
 			}else{
 				let data = 'You do not have permission to run this!';
 				socket.emit('error', data);
+			}
+		});
+		socket.on('enter', (data) => {
+			if(GAMESTATE == 1){
+				setGamestate(0);
+				let ans = teams.get(socket.id);
+				console.log('Winner: ' + ans);
+				let data = {winner: ans};
+				io.sockets.emit('winner', data);
 			}
 		});
 
@@ -80,6 +111,10 @@ if(io != null) {
 				let data = random.int(2, 8);
 				console.log('Sending a countdown of ' + data + ' seconds');
 				io.sockets.emit('count', {_:data});
+				setTimeout(() => {
+					console.log('entered');
+					setGamestate(1);
+				}, (data)*1000);
 			}
 		},
 		{

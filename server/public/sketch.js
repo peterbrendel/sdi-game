@@ -50,13 +50,27 @@ function setup() {
         countdown = 3;
         round = true;
         startTime = second();
-    })
+    });
+    socket.on('winner', (data) => {
+        if(gi){
+            gi = false;
+            txt = 'Winner\n' + data.winner;
+        }
+    });
 
 }
 
 function getInput() {
     send('getName', { name: inp.value() });
     DestroyDOMLoginElements();
+}
+
+function keyPressed(){
+    if(gi){
+        if(keyCode === ENTER){
+            send('enter', { garbage: null });
+        }
+    }
 }
 
 function draw() {
@@ -104,6 +118,11 @@ function draw() {
 }
 
 // Function for sending to the socket
+function send(evt) {
+    console.log("send: " + evt);
+    socket.emit(evt, null);
+}
+
 function send(evt, data) {
   console.log("send: " + evt + "\ndata: " + data);
   socket.emit(evt, data);

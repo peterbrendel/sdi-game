@@ -3,6 +3,7 @@ Servidor do jogo de SDI.
 
 # contents
 -- Aplicação servidora de páginas web com servidor websocket responsável pela execução do jogo;
+
 -- Página web dos jogadores.
 
 # install
@@ -27,6 +28,7 @@ $ node main.js
 
 # usage
 O administrador controla o jogo pelo terminal
+
 Pressionar TAB para ver lista de comandos
 
 # clients
